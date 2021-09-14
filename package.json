@@ -1,0 +1,38 @@
+{
+  "name": "to-do-task",
+  "version": "1.0.0",
+  "description": "to do web-app. you can add tasks, view them, edit or delete. every task has status (completed or incompleted), title and description text",
+  "private": true,
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "keywords": [
+    "to do",
+    "tasks",
+    "planning",
+    "to do web app",
+    "tasks list"
+  ],
+  "author": "Alexey Bodnarchuk <alexe1900@mail.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.2.0",
+    "eslint": "^7.32.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-webpack-plugin": "^3.0.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1",
+    "mini-css-extract-plugin": "^2.3.0",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.2.0",
+    "xml-loader": "^1.2.1"
+  }
+}
