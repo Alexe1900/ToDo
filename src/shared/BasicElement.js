@@ -1,4 +1,4 @@
-export default class BasicElement {
+export class BasicElement {
   constructor(tag = "div", styles = []) {
     this.element = document.createElement(tag);
     if (styles.join("") !== "") {

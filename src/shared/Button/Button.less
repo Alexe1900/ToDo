@@ -1,0 +1,33 @@
+@textColor: #000;
+@backgroundColor: #fff;
+@borderColor: #888;
+
+.button {
+  --textColor: @textColor;
+  --backgroundColor: @backgroundColor;
+  --borderColor: @borderColor;
+
+  padding: 1ch 2ch;
+
+  .setColor(text);
+  font-size: large;
+  font-family: sans-serif;
+
+  .setColor(back);
+  .setColor(border);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+}
+
+.setColor(text) {
+  color: ~"var(--textColor)";
+}
+
+.setColor(back) {
+  background-color: ~"var(--backgroundColor)";
+}
+
+.setColor(border) {
+  border-color: ~"var(--borderColor)";
+}
