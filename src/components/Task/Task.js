@@ -1,9 +1,7 @@
 import { BasicElement } from "../../shared/BasicElement";
 import Title from "../../shared/Title/Title";
 import Paragraph from "../../shared/Paragraph/Paragraph";
-import Button from "../../shared/Button/Button";
-
-import TaskModel from "../../shared/TaskModel";
+import TaskButtons from "./TaskButtons/TaskButtons";
 
 import "./Task.less";
 
@@ -23,19 +21,7 @@ export default class Task extends BasicElement {
     );
     this.element.append(this.taskText.element);
 
-    this.buttons = new BasicElement("div", ["buttons"]);
-
-    this.buttons.deleteButton = new Button("Delete", "#800", "#fff", "#800", [
-      "task-button",
-      "task-delete-button",
-    ]);
-    this.buttons.element.append(this.buttons.deleteButton.element);
-
-    this.buttons.editButton = new Button("Edit", "#c80", "#fff", "#c80", [
-      "task-button",
-      "task-edit-button",
-    ]);
-    this.buttons.element.append(this.buttons.editButton.element);
+    this.buttons = new TaskButtons();
 
     this.element.append(this.buttons.element);
   }
