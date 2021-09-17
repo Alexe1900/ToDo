@@ -22,16 +22,17 @@ module.exports = ({ development }) => ({
   output: {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
+    assetModuleFilename: "assets/[hash][ext]",
   },
   plugins: [
+    new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src/index.html"),
     }),
-    new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [{ from: path.resolve(__dirname, "src/assets") }],
     }),
-    new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
+    new CleanWebpackPlugin(),
   ],
   module: {
     rules: [
@@ -40,7 +41,7 @@ module.exports = ({ development }) => ({
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/,
+        test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
         use: ["file-loader"],
       },
       {
