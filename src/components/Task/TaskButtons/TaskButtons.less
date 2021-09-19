@@ -1,6 +1,4 @@
 .task-buttons {
-  justify-content: space-between;
-
   display: flex;
   width: 350px;
   padding: 5px;
@@ -9,8 +7,24 @@
   border-radius: 10px;
 }
 
+@media screen and (min-width: 370px) {
+  .task-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 369px) {
+  .task-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .task-button {
+    margin: 5px 0;
+  }
+}
+
 .task-button {
   text-align: center;
-
-  width: 30%;
 }
