@@ -1,16 +1,37 @@
 import AddTaskForm from "./components/AddTaskForm/AddTaskForm";
-import Task from "./components/task/Task";
 import TaskModel from "./shared/TaskModel";
+import TasksContainer from "./components/TasksContainer/TasksContainer";
+
+let tasksModels = [];
 
 let form = new AddTaskForm();
 document.body.append(form.element);
 
-for (let index = 0; index < 10; index++) {
-  let task = new TaskModel("Buy bread", "Go to shop and buy bread");
-  if (index > 7) {
-    task.completeTask();
-  }
-  let taskObject = new Task(task);
+let container = new TasksContainer(tasksModels);
+document.body.append(container.element);
 
-  document.body.append(taskObject.element);
-}
+form.addButton.element.addEventListener("click", () => {
+  let newTask = new TaskModel(
+    form.titleInput.element.value,
+    form.textInput.element.value
+  );
+
+  form.titleInput.element.value = "";
+  form.textInput.element.value = "";
+
+  let exists = false;
+  tasksModels.forEach((element) => {
+    if (
+      [element.title, element.text].join("") ==
+      [newTask.title, newTask.text].join("")
+    ) {
+      alert("This task already exists");
+      exists = true;
+    }
+  });
+
+  if (!exists) {
+    container.append(newTask);
+    tasksModels.push(newTask);
+  }
+});
