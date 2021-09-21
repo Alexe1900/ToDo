@@ -5,7 +5,7 @@ import TaskButtons from "./TaskButtons/TaskButtons";
 import "./Task.less";
 
 export default class Task extends BasicElement {
-  constructor(taskObject) {
+  constructor(taskObject, id) {
     super("div", ["task"]);
 
     this.content = new TaskContent(taskObject);
@@ -13,5 +13,7 @@ export default class Task extends BasicElement {
 
     this.buttons = new TaskButtons();
     this.element.append(this.buttons.element);
+
+    this.id = id;
   }
 }
