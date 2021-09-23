@@ -1,5 +1,6 @@
 import { BasicElement } from "../../shared/BasicElement";
-import Task from "../task/Task";
+import TaskModel from "../../shared/TaskModel";
+import Task from "../Task/Task";
 
 export default class TasksContainer extends BasicElement {
   constructor(tasksModels) {
@@ -11,17 +12,47 @@ export default class TasksContainer extends BasicElement {
     );
   }
 
-  renderByTasks(tasks) {
+  renderByTasks(tasksForRender) {
     this.element.innerHTML = "";
-    this.tasks = [];
-    tasks.forEach((task) => {
-      this.tasks.push(task);
-      task.buttons.deleteButton.element.addEventListener("click", () => {
-        this.tasks = this.tasks.filter((iterTask) => iterTask.id != task.id);
-        this.renderByTasks(this.tasks);
-      });
+    this.tasks = tasksForRender;
+
+    this.tasks.forEach((task, index) => {
+      this.addDeleteTaskListener(task);
+
+      this.addEditTaskListener(task, index);
+
       this.element.append(task.element);
     });
+  }
+
+  addDeleteTaskListener(task) {
+    task.buttons.deleteButton.element.addEventListener("click", () => {
+      this.tasks = this.tasks.filter((iterTask) => iterTask.id != task.id);
+      this.renderByTasks(this.tasks);
+    });
+  }
+
+  addEditTaskListener(task, index) {
+    task.buttons.editButton.element.addEventListener("click", () => {
+      task.editTaskForm.element.classList.add("open");
+      task.editTaskForm.titleInput.element.value = task.data.title;
+      task.editTaskForm.textInput.element.value = task.data.text;
+
+      task.editTaskForm.setButton.element.addEventListener("click", () => {
+        this.setTaskListener(task, index);
+      });
+    });
+  }
+
+  setTaskListener(task, index) {
+    let newTaskModel = new TaskModel(
+        task.editTaskForm.titleInput.element.value,
+        task.editTaskForm.textInput.element.value
+      ),
+      newTask = new Task(newTaskModel, new Date().getTime());
+    this.tasks.splice(index, 1, newTask);
+    task.editTaskForm.element.classList.remove("open");
+    this.renderByTasks(this.tasks);
   }
 
   // append(taskModel) {
