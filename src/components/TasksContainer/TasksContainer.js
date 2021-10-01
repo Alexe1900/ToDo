@@ -29,10 +29,6 @@ export default class TasksContainer extends BasicElement {
 
       this.addDisableTaskListener(task);
 
-      if (task.buttons.activateButton.element.classList.contains("visible")) {
-        task.buttons.activateButton.element.classList.remove("visible");
-      }
-
       this.element.append(task.element);
     });
 
@@ -64,7 +60,7 @@ export default class TasksContainer extends BasicElement {
         );
       }
 
-      this.renderByTasks(this.completedTasks, this.incompletedTasks);
+      this.renderByTasks(this.incompletedTasks, this.completedTasks);
     });
   }
 
