@@ -1,5 +1,6 @@
 import { BasicElement } from "../../shared/BasicElement";
 import TaskModel from "../../shared/TaskModel";
+import Title from "../../shared/Title/Title";
 import Task from "../Task/Task";
 
 export default class TasksContainer extends BasicElement {
@@ -45,6 +46,14 @@ export default class TasksContainer extends BasicElement {
       task.content.element.classList.add("grey");
       this.element.append(task.element);
     });
+
+    this.counter = new Title(
+      `Incompleted: ${this.incompletedTasks.length}
+      Completed: ${this.completedTasks.length}
+      At all: ${this.incompletedTasks.length + this.completedTasks.length}`,
+      []
+    );
+    this.element.append(this.counter.element);
   }
 
   addDeleteTaskListener(task, completed) {
