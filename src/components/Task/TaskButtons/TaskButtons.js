@@ -21,5 +21,14 @@ export default class TaskButtons extends BasicElement {
       "task-button",
     ]);
     this.element.append(this.disableButton.element);
+
+    this.activateButton = new Button(
+      "Activate task",
+      "#07beb8",
+      "#fff",
+      "#07beb8",
+      ["task-button", "task-activate-button"]
+    );
+    this.element.append(this.activateButton.element);
   }
 }

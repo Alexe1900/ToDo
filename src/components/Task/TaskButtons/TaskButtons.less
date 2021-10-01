@@ -1,6 +1,6 @@
 .task-buttons {
-  display: flex;
-  width: 350px;
+  display: inline-flex;
+  min-width: 350px;
   padding: 5px;
 
   border: 3px solid #444;
@@ -33,4 +33,19 @@
 
 .task-button {
   text-align: center;
+}
+
+.task-button:disabled {
+  text-decoration: line-through;
+  color: #444;
+
+  border-color: #444;
+}
+
+.task-activate-button {
+  display: none;
+}
+
+.task-activate-button.visible {
+  display: inline;
 }

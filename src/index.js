@@ -6,7 +6,7 @@ import Task from "./components/Task/Task";
 let form = new AddTaskForm();
 document.body.append(form.element);
 
-let container = new TasksContainer([]);
+let container = new TasksContainer();
 document.body.append(container.element);
 
 form.addButton.element.addEventListener("click", () => {
@@ -16,9 +16,9 @@ form.addButton.element.addEventListener("click", () => {
     ),
     newTask = new Task(newTaskModel, new Date().getTime());
 
-  let exists = false;
+  let isTaskExisting = false;
 
-  container.tasks.forEach((task) => {
+  container.incompletedTasks.forEach((task) => {
     // console.log("task.data", task.data);
     // console.log("newTaskModel", newTaskModel);
 
@@ -26,17 +26,34 @@ form.addButton.element.addEventListener("click", () => {
     Object.is(newTaskModel, task.data)
     */
     if (
-      Object.entries(newTaskModel).join("") ==
-      Object.entries(task.data).join("")
+      Object.entries(newTaskModel).join() == Object.entries(task.data).join()
     ) {
       alert("This task already exists");
-      exists = true;
+      isTaskExisting = true;
     }
   });
 
-  if (!exists) {
-    container.tasks.push(newTask);
-    container.renderByTasks(container.tasks);
+  container.completedTasks.forEach((task) => {
+    // console.log("task.data", task.data);
+    // console.log("newTaskModel", newTaskModel);
+
+    /*
+    Object.is(newTaskModel, task.data)
+    */
+    if (
+      Object.entries(newTaskModel).join() == Object.entries(task.data).join()
+    ) {
+      alert("This task already exists");
+      isTaskExisting = true;
+    }
+  });
+
+  if (!isTaskExisting) {
+    container.incompletedTasks.push(newTask);
+    container.renderByTasks(
+      container.incompletedTasks,
+      container.completedTasks
+    );
 
     form.titleInput.element.value = "";
     form.textInput.element.value = "";

@@ -6,10 +6,7 @@ import "./TaskContent.less";
 
 export default class TaskContent extends BasicElement {
   constructor(taskObject) {
-    super(
-      "div",
-      taskObject.active ? ["task-content"] : ["task-content", "grey"]
-    );
+    super("div", ["task-content"]);
 
     this.taskTitle = new Title(taskObject.title, ["task-title"]);
     this.element.append(this.taskTitle.element);

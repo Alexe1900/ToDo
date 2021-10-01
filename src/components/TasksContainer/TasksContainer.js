@@ -1,58 +1,124 @@
 import { BasicElement } from "../../shared/BasicElement";
+import Button from "../../shared/Button/Button";
 import TaskModel from "../../shared/TaskModel";
 import Task from "../Task/Task";
 
 export default class TasksContainer extends BasicElement {
-  constructor(tasksModels) {
+  constructor() {
     super("div", ["tasks-container"]);
-    this.tasks = [];
+    this.incompletedTasks = [];
+    this.completedTasks = [];
 
-    this.renderByTasks(
-      tasksModels.map((model) => new Task(model, new Date().getTime()))
-    );
+    this.renderByTasks([], []);
   }
 
-  renderByTasks(tasksForRender) {
+  renderByTasks(incompletedTasksForRender, completedTasksForRender) {
     this.element.innerHTML = "";
-    this.tasks = tasksForRender;
 
-    this.tasks.forEach((task, index) => {
-      this.addDeleteTaskListener(task);
+    this.incompletedTasks = incompletedTasksForRender.map((task) => {
+      return new Task(task.data, task.id);
+    });
+    this.completedTasks = completedTasksForRender.map((task) => {
+      return new Task(task.data, task.id);
+    });
 
-      this.addEditTaskListener(task, index);
+    this.incompletedTasks.forEach((task, index) => {
+      this.addDeleteTaskListener(task, false);
 
+      this.addEditTaskListener(task, index, false);
+
+      this.addDisableTaskListener(task);
+
+      if (task.buttons.activateButton.element.classList.contains("visible")) {
+        task.buttons.activateButton.element.classList.remove("visible");
+      }
+
+      this.element.append(task.element);
+    });
+
+    this.completedTasks.forEach((task) => {
+      this.addDeleteTaskListener(task, true);
+
+      task.buttons.editButton.element.setAttribute("disabled", "");
+
+      task.buttons.disableButton.element.setAttribute("disabled", "");
+
+      task.buttons.activateButton.element.classList.add("visible");
+
+      this.addActivateTaskListener(task);
+
+      task.content.element.classList.add("grey");
       this.element.append(task.element);
     });
   }
 
-  addDeleteTaskListener(task) {
+  addDeleteTaskListener(task, completed) {
     task.buttons.deleteButton.element.addEventListener("click", () => {
-      this.tasks = this.tasks.filter((iterTask) => iterTask.id != task.id);
-      this.renderByTasks(this.tasks);
+      if (completed) {
+        this.completedTasks = this.completedTasks.filter(
+          (iterTask) => iterTask.id != task.id
+        );
+      } else {
+        this.incompletedTasks = this.incompletedTasks.filter(
+          (iterTask) => iterTask.id != task.id
+        );
+      }
+
+      this.renderByTasks(this.completedTasks, this.incompletedTasks);
     });
   }
 
-  addEditTaskListener(task, index) {
+  addEditTaskListener(task, index, completed) {
     task.buttons.editButton.element.addEventListener("click", () => {
       task.editTaskForm.element.classList.add("open");
       task.editTaskForm.titleInput.element.value = task.data.title;
       task.editTaskForm.textInput.element.value = task.data.text;
 
       task.editTaskForm.setButton.element.addEventListener("click", () => {
-        this.setTaskListener(task, index);
+        this.setTaskListener(task, index, completed);
       });
     });
   }
 
-  setTaskListener(task, index) {
+  setTaskListener(task, index, completed) {
     let newTaskModel = new TaskModel(
         task.editTaskForm.titleInput.element.value,
         task.editTaskForm.textInput.element.value
       ),
       newTask = new Task(newTaskModel, new Date().getTime());
-    this.tasks.splice(index, 1, newTask);
+
+    if (completed) {
+      this.completedTasks.splice(index, 1, newTask);
+    } else {
+      this.incompletedTasks.splice(index, 1, newTask);
+    }
+
     task.editTaskForm.element.classList.remove("open");
-    this.renderByTasks(this.tasks);
+    this.renderByTasks(this.incompletedTasks, this.completedTasks);
+  }
+
+  addDisableTaskListener(task) {
+    task.buttons.disableButton.element.addEventListener("click", () => {
+      this.incompletedTasks = this.incompletedTasks.filter(
+        (iterTask) => iterTask.id != task.id
+      );
+
+      this.completedTasks.push(new Task(task.data, task.id));
+
+      this.renderByTasks(this.incompletedTasks, this.completedTasks);
+    });
+  }
+
+  addActivateTaskListener(task) {
+    task.buttons.activateButton.element.addEventListener("click", () => {
+      this.completedTasks = this.completedTasks.filter(
+        (iterTask) => iterTask.id != task.id
+      );
+
+      this.incompletedTasks.push(new Task(task.data, task.id));
+
+      this.renderByTasks(this.incompletedTasks, this.completedTasks);
+    });
   }
 
   // append(taskModel) {
