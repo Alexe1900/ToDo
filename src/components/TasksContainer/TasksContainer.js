@@ -35,9 +35,9 @@ export default class TasksContainer extends BasicElement {
     this.completedTasks.forEach((task) => {
       this.addDeleteTaskListener(task, true);
 
-      task.buttons.editButton.element.setAttribute("disabled", "");
+      task.buttons.editButton.element.classList.add("invisible");
 
-      task.buttons.disableButton.element.setAttribute("disabled", "");
+      task.buttons.disableButton.element.classList.add("invisible");
 
       task.buttons.activateButton.element.classList.add("visible");
 
