@@ -1,7 +1,7 @@
 import { BasicElement } from "../../shared/BasicElement";
 import TaskContent from "./TaskContent/TaskContent";
 import TaskButtons from "./TaskButtons/TaskButtons";
-import EditTaskForm from "../TasksContainer/EditTaskForm/EditTaskForm";
+import EditTaskForm from "./EditTaskForm/EditTaskForm";
 
 import "./Task.less";
 
