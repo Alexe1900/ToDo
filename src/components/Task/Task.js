@@ -5,6 +5,18 @@ import EditTaskForm from "./EditTaskForm/EditTaskForm";
 
 import "./Task.less";
 
+const msg = new SpeechSynthesisUtterance();
+
+let voice = null;
+
+function populateVoices() {
+  voice = this.getVoices()[0];
+}
+
+msg.voice = voice;
+
+speechSynthesis.addEventListener("voiceschanged", populateVoices);
+
 export default class Task extends BasicElement {
   constructor(taskObject, id) {
     super("div", ["task"]);
@@ -21,5 +33,13 @@ export default class Task extends BasicElement {
 
     this.editTaskForm = new EditTaskForm();
     this.element.append(this.editTaskForm.element);
+
+    this.buttons.readButton.element.addEventListener("click", () => {
+      msg.text = this.data.title;
+      speechSynthesis.speak(msg);
+
+      msg.text = this.data.text;
+      speechSynthesis.speak(msg);
+    });
   }
 }
