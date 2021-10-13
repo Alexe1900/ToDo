@@ -1,7 +1,21 @@
 import { BasicElement } from "../../shared/BasicElement";
+import Button from "../../shared/Button/Button";
 import TaskModel from "../../shared/TaskModel";
 import Title from "../../shared/Title/Title";
 import Task from "../Task/Task";
+import "./TasksContainer.less";
+
+const msg = new SpeechSynthesisUtterance();
+
+let voice = null;
+
+function populateVoices() {
+  voice = this.getVoices()[0];
+}
+
+msg.voice = voice;
+
+speechSynthesis.addEventListener("voiceschanged", populateVoices);
 
 export default class TasksContainer extends BasicElement {
   constructor() {
@@ -14,6 +28,18 @@ export default class TasksContainer extends BasicElement {
 
   renderByTasks(incompletedTasksForRender, completedTasksForRender) {
     this.element.innerHTML = "";
+
+    this.readAllTasksButton = new Button(
+      "Read all tasks",
+      "#80b8",
+      "#fff",
+      "#80b8",
+      ["read-all-tasks-button"]
+    );
+
+    this.element.append(this.readAllTasksButton.element);
+
+    this.setReadAllTasksListener();
 
     this.incompletedTasks = incompletedTasksForRender.map((task) => {
       return new Task(task.data, task.id);
@@ -54,6 +80,29 @@ export default class TasksContainer extends BasicElement {
       []
     );
     this.element.append(this.counter.element);
+  }
+
+  setReadAllTasksListener() {
+    this.readAllTasksButton.element.addEventListener("click", () => {
+      msg.text = "Незавершённые задачи:";
+      speechSynthesis.speak(msg);
+
+      if (this.incompletedTasks.length == 0) {
+        msg.text = "нету";
+        speechSynthesis.speak(msg);
+      } else {
+        this.incompletedTasks.forEach((task) => {
+          if (task.data.title) {
+            msg.text = task.data.title;
+            speechSynthesis.speak(msg);
+          }
+          if (task.data.text) {
+            msg.text = task.data.text;
+            speechSynthesis.speak(msg);
+          }
+        });
+      }
+    });
   }
 
   addDeleteTaskListener(task, completed) {
