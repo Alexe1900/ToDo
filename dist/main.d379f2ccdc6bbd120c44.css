@@ -138,6 +138,7 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 .edit-task-form {
+  background-color: #000000;
   box-shadow: 0 0 500px 200px rgba(0, 0, 0, 0.8);
   background-color: #000000;
 }
