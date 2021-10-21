@@ -91,16 +91,16 @@ export default class TasksContainer extends BasicElement {
         msg.text = "нету";
         speechSynthesis.speak(msg);
       } else {
+        msg.text = "";
         this.incompletedTasks.forEach((task) => {
           if (task.data.title) {
-            msg.text = task.data.title;
-            speechSynthesis.speak(msg);
+            msg.text += `${task.data.title}, `;
           }
           if (task.data.text) {
-            msg.text = task.data.text;
-            speechSynthesis.speak(msg);
+            msg.text += `(${task.data.text}), `;
           }
         });
+        speechSynthesis.speak(msg);
       }
     });
   }
